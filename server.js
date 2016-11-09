@@ -19,8 +19,15 @@ var msgs=[
     {user:"kilroy", phone: "123 555 1212", message:"was here!"}
 ]
 
+var uu = "";	// Global Variable to store the Username. (Rohan)
+
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});		// Added code to allow CORS. (Rohan)
 
 function sendUnauthorized(response) {
     response.status(401);
@@ -36,6 +43,7 @@ app.post('/login', function(request, response) {
         return sendUnauthorized(response);
     }
     response.cookie('login', user);
+	uu = user;	// Added the line to assign the User in Global Variable "uu": (Rohan)
     response.json({result: true});
 });
 
@@ -95,9 +103,9 @@ app.get('/states',function(request, response) {
     } else {
         limit = +limit;
     }
-    if (limit > 10) {
-        limit = 10;
-    }
+    //if (limit > 10) {
+    //    limit = 10;
+    //}		// Commented because it was not allowing to access all of the States data.	(Rohan)
     result = result.slice(offset, offset+limit);
     response.json(result);
 });
@@ -111,10 +119,13 @@ app.get('/secret', function(request, response) {
 });
 
 app.post('/write', function(request, response) {
+	/*
     var user = request.cookies.login;
     if (users[user] === undefined) {
         return sendUnauthorized(response);
     }
+	*/		// Commented by Rohan: Cookie is not working, hence got the user from Global Variable "uu".
+	var user = uu;		// Added the line to get the Username in local Variable: (Rohan)
     var msg = request.body.message;
     var phone = request.body.phone;
     if (msg === undefined || phone === undefined) {
@@ -129,8 +140,8 @@ app.post('/write', function(request, response) {
 app.get('/read', function(request, response) {
     response.json(msgs);
 });
-
-app.use(express.static(__dirname+'/public'));
+// Modified directory path. (Rohan)
+app.use(express.static(__dirname+'/public/frontend-consume-api-Rohan'));
 
 var server=app.listen(8888, function() {
     console.log("We have started our server at http://localhost:8888");

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl as vm">
+    <form ng-submit="vm.login()">
+        <div class="container">
+            <div ng-if="vm.loginfr" class="panel panel-default">
+                <div class="panel-heading">Login to the app</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span>Username</span>
+                                </span>
+                                <input type="text" ng-model="vm.data.user" class="form-control">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Password
+                                </span>
+                                <input type="password" ng-model="vm.data.password" class="form-control">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                        </br>
+                            <input type="submit" value="Login" class="btn btn-primary btn-md" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="vm.home" class="panel panel-default">
+                <div class="panel-heading">Welcome to home</div>
+                <div class="panel-body">
+                    <div>
+                        Welcome <b>{{vm.username}}</b>!
+                        <a href="javascript:void(0)" ng-click="vm.logout()">Logout</a>
+
+                        <br />
+                        <br />
+
+                        <div class="row">
+                            <div class="col col-lg-6">
+                                <div class="row">
+                                    <div class="col col-lg-9">
+                                        <span>States</span>
+                                        <select class="form-control" ng-model="vm.statesdd" ng-change="vm.getSingleStateData()">
+                                            <option value="">Select States</option>
+                                            <option ng-repeat="option in vm.states" value="{{option.abbreviation}}">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row" ng-repeat="item in vm.stateDD">
+                                    <div class="col col-lg-4">
+                                        <b>{{item.name}}</b>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        {{item.value}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-lg-6">
+                                <input type="button" value="Read Messages" class="btn btn-success" ng-click="vm.getMessages()" />
+                                <input type="button" value="Write Message" class="btn btn-primary" ng-click="vm.writeMessage()" />
+
+                                <br />
+                                <br />
+                                <table class="table" ng-if="vm.msgData">
+                                    <thead>
+                                        <tr>
+                                            <th>Message</th>
+                                            <th>Phone</th>
+                                            <th>User</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.messagesDD">
+                                            <td>{{item.message}}</td>
+                                            <td>{{item.phone}}</td>
+                                            <td>{{item.user}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div ng-if="vm.writemsg">
+                                    <div class="row">
+                                        <div class="col col-lg-2">
+                                            <span>Phone</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="text" class="form-control" ng-model="vm.msg.phone" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-lg-2">
+                                            <span>Message</span>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input type="text" class="form-control" ng-model="vm.msg.message" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-lg-12">
+                                            <input type="button" value="Save" class="btn btn-default" ng-click="vm.saveMessage()" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
